@@ -1,14 +1,14 @@
 <?php
 
 //READ
-function test()
+function getUsers()
 {
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM Test;";
+    $query = "select * from Users;";
 
     $st = $pdo->prepare($query);
     //    $st->execute([$param,$param]);
-    $st->execute();
+    $st->execute([]);
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
 
@@ -19,13 +19,13 @@ function test()
 }
 
 //READ
-function testDetail($testNo)
+function getUserDetail($userIdx)
 {
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM Test WHERE no = ?;";
+    $query = "select * from Users where userIdx = ?;";
 
     $st = $pdo->prepare($query);
-    $st->execute([$testNo]);
+    $st->execute([$userIdx]);
     //    $st->execute();
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
@@ -36,14 +36,32 @@ function testDetail($testNo)
     return $res[0];
 }
 
-
-function testPost($name)
+//READ
+function isValidUserIdx($userIdx)
 {
     $pdo = pdoSqlConnect();
-    $query = "INSERT INTO Test (name) VALUES (?);";
+    $query = "select EXISTS(select * from Users where userIdx = ?) exist;";
 
     $st = $pdo->prepare($query);
-    $st->execute([$name]);
+    $st->execute([$userIdx]);
+    //    $st->execute();
+    $st->setFetchMode(PDO::FETCH_ASSOC);
+    $res = $st->fetchAll();
+
+    $st = null;
+    $pdo = null;
+
+    return $res[0]['exist'];
+}
+
+
+function createUser($ID, $pwd, $name)
+{
+    $pdo = pdoSqlConnect();
+    $query = "INSERT INTO Users (ID, pwd, name) VALUES (?,?,?);";
+
+    $st = $pdo->prepare($query);
+    $st->execute([$ID, $pwd, $name]);
 
     $st = null;
     $pdo = null;

@@ -3,7 +3,7 @@ require 'function.php';
 
 const JWT_SECRET_KEY = "TEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEYTEST_KEY";
 
-$res = (Object)Array();
+$res = (object)array();
 header('Content-Type: json');
 $req = json_decode(file_get_contents("php://input"));
 try {
@@ -27,9 +27,10 @@ try {
          * API Name : 테스트 API
          * 마지막 수정 날짜 : 19.04.29
          */
-        case "test":
+        case "getUsers":
             http_response_code(200);
-            $res->result = test();
+
+            $res->result = getUsers();
             $res->isSuccess = TRUE;
             $res->code = 100;
             $res->message = "테스트 성공";
@@ -40,9 +41,10 @@ try {
          * API Name : 테스트 Path Variable API
          * 마지막 수정 날짜 : 19.04.29
          */
-        case "testDetail":
+        case "getUserDetail":
             http_response_code(200);
-            $res->result = testDetail($vars["testNo"]);
+
+            $res->result = getUserDetail($vars["userIdx"]);
             $res->isSuccess = TRUE;
             $res->code = 100;
             $res->message = "테스트 성공";
@@ -53,9 +55,15 @@ try {
          * API Name : 테스트 Body & Insert API
          * 마지막 수정 날짜 : 19.04.29
          */
-        case "testPost":
+        case "createUser":
             http_response_code(200);
-            $res->result = testPost($req->name);
+
+            // Packet의 Body에서 데이터를 파싱합니다.
+            $userID = $req->userID;
+            $pwd_hash = password_hash($req->pwd, PASSWORD_DEFAULT); // Password Hash
+            $name = $req->name;
+
+            $res->result = createUser($userID, $pwd_hash, $name);
             $res->isSuccess = TRUE;
             $res->code = 100;
             $res->message = "테스트 성공";
