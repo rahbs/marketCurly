@@ -1,32 +1,32 @@
 <?php
 
-function isValidUser($id, $pw){
+function isValidUser($ID, $pwd){
     $pdo = pdoSqlConnect();
-    $query = "SELECT EXISTS(SELECT * FROM UserInfo WHERE email= ? AND password = ?) AS exist;";
+    $query = "SELECT ID, pwd as hash FROM Users WHERE ID= ?;";
 
 
     $st = $pdo->prepare($query);
-    $st->execute([$id, $pw]);
+    $st->execute([$ID]);
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
 
     $st=null;$pdo = null;
 
-    return intval($res[0]["exist"]);
+    return password_verify($pwd, $res[0]['hash']);
 
 }
-function getUserIdxByEmail($email)
+function getUserIdxByID($ID)
 {
     $pdo = pdoSqlConnect();
-    $query = "SELECT idx FROM UserInfo WHERE email = ?;";
+    $query = "SELECT userIdx FROM Users WHERE ID = ?;";
 
     $st = $pdo->prepare($query);
-    $st->execute([$email]);
+    $st->execute([$ID]);
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
 
     $st = null;
     $pdo = null;
 
-    return $res[0]['idx'];
+    return $res[0]['userIdx'];
 }
