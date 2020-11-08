@@ -16,15 +16,74 @@ ini_set('default_charset', 'utf8mb4');
 
 //Main Server API
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+    /* ******************   social sign-up   ****************** */
+    $r->addRoute('POST', '/kakao-sign-in', ['IndexController', 'kakaoSignIn']);
+
     /* ******************   JWT   ****************** */
+    //API no: 1
     $r->addRoute('POST', '/jwt', ['JWTController', 'createJwt']);   // JWT 생성: 로그인 + 해싱된 패스워드 검증 내용 추가
+    //API no: 2
     $r->addRoute('GET', '/jwt', ['JWTController', 'validateJwt']);  // JWT 유효성 검사
 
     /* ******************   Test   ****************** */
+    //API no: 3
     $r->addRoute('GET', '/', ['IndexController', 'index']);
+    //API no: 4
     $r->addRoute('GET', '/users', ['IndexController', 'getUsers']);
-    $r->addRoute('GET', '/users/{userIdx}', ['IndexController', 'getUserDetail']);
+
+    /* ******************   API   ****************** */
+    //API no: 5
     $r->addRoute('POST', '/user', ['IndexController', 'createUser']); // 비밀번호 해싱 예시 추가
+    //API no: 6
+    $r->addRoute('GET', '/user', ['IndexController', 'getUserDetail']);
+    //API no: 7
+    $r->addRoute('PATCH', '/user', ['IndexController', 'editUserDetail']);
+    //API no: 8
+    $r->addRoute('DELETE', '/user', ['IndexController', 'deleteUser']);
+    //API no: 9
+    $r->addRoute('GET', '/coupons', ['IndexController', 'getUserCoupons']);
+    //API no: 10
+    $r->addRoute('GET', '/orders', ['IndexController', 'getUserOrders']);
+    //API no: 11
+    $r->addRoute('POST', '/order', ['IndexController', 'createOrder']);
+    //API no: 12
+    $r->addRoute('DELETE', '/order/{orderId}', ['IndexController', 'deleteOrder']);
+    //API no: 13
+    $r->addRoute('GET', '/order/{orderId}', ['IndexController', 'getOrderDetail']);
+    //API no: 14
+    $r->addRoute('GET', '/categories', ['IndexController', 'getCategories']);
+    //API no: 15
+    $r->addRoute('GET', '/categories/{categoryId}/subcategories', ['IndexController', 'getSubcategories']);
+    //API no: 16
+    $r->addRoute('GET', '/products', ['IndexController', 'getProducts']);
+    //API no: 17
+    $r->addRoute('GET', '/product/{productId}/options', ['IndexController', 'getProductOptions']);
+    //API no: 18
+    $r->addRoute('GET', '/product/{productId}/img', ['IndexController', 'getProductImg']);
+    //API no: 19
+    $r->addRoute('GET', '/product/{productId}/description', ['IndexController', 'getProductDescription']);
+    //API no: 20
+    $r->addRoute('POST', '/product', ['IndexController', 'addProduct']);
+    //API no: 21
+    $r->addRoute('DELETE', '/product/{productId}', ['IndexController', 'deleteProduct']);
+    //API no: 22
+    $r->addRoute('DELETE', '/product/option/{optionId}', ['IndexController', 'deleteProductOption']);
+    //API no: 23
+    $r->addRoute('POST', '/product/option/{optionId}/review', ['IndexController', 'createReview']);
+    //API no: 24
+    $r->addRoute('PATCH', '/product/option/review/{reviewId}', ['IndexController', 'modifyReview']);
+    //API no: 25
+    $r->addRoute('GET', '/product/{productId}/reviews', ['IndexController', 'getReviews']);
+    //API no: 26
+    $r->addRoute('GET', '/product/review/{reviewId}', ['IndexController', 'getReviewDetail']);
+
+
+
+//    $r->addRoute('POST', '/product', ['IndexController', 'addProduct']);
+//    $r->addRoute('DELETE', '/product/{productId}', ['IndexController', 'deleteProduct']);
+//    $r->addRoute('POST', '/product/{productId}/option/{optionId}', ['IndexController', 'addProductOption']);
+//    $r->addRoute('DELETE', '/product/{productId}/option/{optionId}', ['IndexController', 'deleteProductOption']);
+
 
 
 

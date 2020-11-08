@@ -26,6 +26,7 @@ function getJWT($userIdx, $secretKey) {
         'iat' => $now_seconds,
         'exp' => $now_seconds + (60 * 60 * 24 * 365), // 유효기간 1년
         'userIdx' => $userIdx
+        //name 추가?
     );
 
 //    echo json_encode($payload);
